@@ -1,11 +1,12 @@
 library(ggplot2)
+library(dplyr)
 
 load("pd.Rda")
 load("pd_tf.Rda")
 
 ui <- fluidPage(
   
-  titlePanel("Hello Shiny!"),
+  titlePanel("Interview keywords"),
   
   sidebarLayout(
     
@@ -39,7 +40,7 @@ server <- function(input, output) {
   })
   
   output$pd_plot <- renderPlot({
-    ggplot(data = pd_data(), aes(x = order, y = n, fill = doc_id)) + 
+    ggplot(data = pd_data(), aes(x = reorder(word, order), y = n, fill = doc_id)) + 
       geom_bar(show.legend = FALSE, stat = "identity") + 
       #facet_wrap(~ doc_id, scales = "free")  +
       # Add categories to axis
@@ -53,7 +54,7 @@ server <- function(input, output) {
   })
   
   output$pd_tf_plot <- renderPlot({
-    ggplot(data = pd_tf_data(), aes(x = order, y = tf_idf, fill = doc_id)) + 
+    ggplot(data = pd_tf_data(), aes(x = reorder(word, order), y = tf_idf, fill = doc_id)) + 
       geom_bar(show.legend = FALSE, stat = "identity") + 
       #facet_wrap(~ doc_id, scales = "free")  +
       # Add categories to axis
